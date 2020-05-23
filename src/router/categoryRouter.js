@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const {auth} = require("../controllers/authControllers")
-const checkCategory = require("../middleware/checkCategory")
+const {checkCategory} = require("../middleware/checker")
 const {
   getCategorys,
   createCategory,

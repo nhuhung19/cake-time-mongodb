@@ -7,6 +7,8 @@ const bodyParser = require("body-parser")
 const userRouter = require("./src/router/userRouter")
 const authRouter = require("./src/router/authRouter")
 const categoryRouter = require("./src/router/categoryRouter")
+const productRouter = require("./src/router/productRouter")
+const reviewRouter = require("./src/router/reviewRouter")
 const passport = require('./src/auth/passport')
 const cors = require('cors')
 const AppError = require("./src/utils/appError")
@@ -31,7 +33,8 @@ router.route("/").get((req, res) => {
 router.use("/users", userRouter)
 router.use("/auth", authRouter)
 router.use("/categorys", categoryRouter)
-
+router.use("/products", productRouter)
+router.use("/products/:pId", reviewRouter)
 
 function notFound (req, res, next) {
   next (new AppError(404, "API NOT FOUND"))

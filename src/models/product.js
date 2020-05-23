@@ -33,6 +33,11 @@ const productSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    stock:{
+      type: Number,
+      required: [true, "stock is required"],
+      min: [1, "Stock must be equal or great than 1"]
+    },
     availability: {
       type: Number,
       min: [0, "availability must be equal or than 0"],
@@ -42,6 +47,10 @@ const productSchema = mongoose.Schema(
       required: [true, "product must have price"],
       min: [0, "price must have atleast 0 dollar"],
     },
+    picture: {
+      type: String,
+      required: [true, "product must have picture"]
+    },
   },
   {
     timestamps: true,
@@ -50,5 +59,13 @@ const productSchema = mongoose.Schema(
   }
 );
 
+productSchema.pre(/^find/, function (next){
+  this
+  .populate("owner", "-password -__v -tokens -createdAt -updatedAt")
+  .populate("category", "_id category")
+  next()
+})
+
+
 const Product = mongoose.model("Product", productSchema)
-module.exports = Productn
+module.exports = Product

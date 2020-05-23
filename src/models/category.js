@@ -14,6 +14,15 @@ const categorySchema = mongoose.Schema({
   toObject: { virtuals: true }
 })
 
+categorySchema.virtual('products', {
+  ref: 'Product',
+  localField: '_id', 
+  foreignField: 'category'
+})
+
+
+
+
 
 const Category = mongoose.model("Category", categorySchema)
 

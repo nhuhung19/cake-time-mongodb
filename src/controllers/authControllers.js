@@ -23,6 +23,7 @@ exports.auth = async function(req, res, next){
     const user = await User.findById({_id: decoded.id, tokens:token})
     if(!user) throw new Error("Unauthorized")
     req.user = user
+    // console.log(user)
   } catch(err){
     return res.status(400).json({status: "fail", error: err.message})
   }
