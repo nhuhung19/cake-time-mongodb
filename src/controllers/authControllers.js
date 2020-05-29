@@ -14,6 +14,7 @@ exports.login = async function(req, res, next){
 }
 
 exports.auth = async function(req, res, next){
+  // console.log("==================")
   if(!req.headers.authorization || !req.headers.authorization.startsWith("Bearer")){
     return res.status(401).json({status: "fail", message: "Unauthorized"})
   }
@@ -24,6 +25,7 @@ exports.auth = async function(req, res, next){
     if(!user) throw new Error("Unauthorized")
     req.user = user
     // console.log(user)
+    // console.log("=====")
   } catch(err){
     return res.status(400).json({status: "fail", error: err.message})
   }

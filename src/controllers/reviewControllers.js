@@ -11,8 +11,15 @@ exports.createReview = catchAsync(async function(req, res){
 })
 
 exports.getReviews = catchAsync(async function(req, res){
-  const reviews = await Review.find({product: req.params.pId})
-  return res.status(200).json({status: "success", data: reviews})
+  const page = req.query.page *1 || 1
+  const limit = req.query.limit* 1 || 4
+  const skip = (page - 1) * limit
+  const totalReviews = await Review.find({product: req.params.pId}).countDocuments()
+  if(skip && req.query.page > totalReviews){
+    return next(new AppError(400, "Page number out of range"))
+  }
+  const reviews = await Review.find({product: req.params.pId}).skip(skip).limit(limit)
+  return res.status(200).json({status: "success", data: reviews, total:totalReviews})
 })
 
 exports.getSingleReview = catchAsync(async function(req, res){

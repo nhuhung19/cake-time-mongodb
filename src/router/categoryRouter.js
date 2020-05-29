@@ -9,7 +9,7 @@ const {
 } = require("../controllers/categoryControllers");
 
 router.route("/")
-.get(auth, getCategorys)
+.get(getCategorys)
 .post(auth, createCategory)
 router.route("/:cId")
 .put(auth, checkCategory, updateCategory)

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Review = require("./review")
 
 const productSchema = mongoose.Schema(
   {
@@ -47,7 +48,7 @@ const productSchema = mongoose.Schema(
       required: [true, "product must have price"],
       min: [0, "price must have atleast 0 dollar"],
     },
-    picture: {
+    image: {
       type: String,
       required: [true, "product must have picture"]
     },
@@ -64,6 +65,11 @@ productSchema.pre(/^find/, function (next){
   .populate("owner", "-password -__v -tokens -createdAt -updatedAt")
   .populate("category", "_id category")
   next()
+})
+
+productSchema.post("findOneAndDelete", async function(){
+  // console.log("========",this)
+  await Review.deleteMany({product: this._conditions._id})
 })
 
 

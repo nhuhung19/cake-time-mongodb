@@ -7,11 +7,11 @@ exports.updateOne = (Model) =>
     let id = req.params.id;
     switch (Model.modelName) {
       case "User":
-        allows = ["password", "address"];
+        allows = ["password", "address", "phone", "city"];
         id = req.user._id;
         break;
       case "Product":
-        allows = ["title", "description", "price", "stock", "picture"];
+        allows = ["title", "description", "price", "stock", "image"];
         id = req.params.pId;
         break;
       case "Review":

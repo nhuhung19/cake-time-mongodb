@@ -6,10 +6,13 @@ const {
   getProducts,
   getSingleProduct,
   getByCategory,
+  getByUser
 } = require("../controllers/productControllers");
 const {auth} = require("../controllers/authControllers")
 
 const {checkProduct, checkCategory} = require("../middleware/checker")
+
+router.route("/user").get(auth, getByUser)
 
 router.route("/")
 .get(getProducts)

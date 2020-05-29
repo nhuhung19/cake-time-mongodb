@@ -14,7 +14,7 @@ module.exports = (new facebookStrategy({
         // console.log(profile._json,"===========================")
         const name = profile._json.first_name+ " " + profile._json.last_name
         const {email} = profile._json
-        const user = await User.findOneOrCreate({name, email})
+        const user = await User.findOneOrCreate(name, email)
         cb(null, user)
     }
 ))

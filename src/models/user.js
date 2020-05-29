@@ -14,6 +14,12 @@ const userSchema = mongoose.Schema({
   address: {
     type: String,
   },
+  phone:{
+    type: String,
+  },
+  city: {
+    type: String,
+  },
   email: {
     type: String,
     unique: true,
@@ -36,6 +42,12 @@ const userSchema = mongoose.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
   })
+
+userSchema.virtual('userProducts',{
+  ref: 'Product',
+  localField: '_id',
+  foreignField: 'owner',
+})
 
 userSchema.statics.loginWithCredentials = async function (email, password) {
   const user = await User.findOne({ email: email })
