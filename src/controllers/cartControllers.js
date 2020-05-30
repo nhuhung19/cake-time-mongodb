@@ -9,6 +9,10 @@ exports.createCart = catchAsync(async function (req, res){
     item.total = item.quantity * item.price
     cart = await Cart.create({user: req.user._id})
     cart.items.push(item)
+    cart.totalPrice = cart.items.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.total,
+      0
+    );
   } else {
     cart = await Cart.findOne({user: req.user._id})
     const idx = cart.items.findIndex(el => el.id.toString() === item.id)
@@ -17,8 +21,13 @@ exports.createCart = catchAsync(async function (req, res){
       product.quantity = item.quantity + product.quantity
       product.total = item.price * product.quantity
     } else{
+      item.total = item.quantity * item.price
       cart.items.push(item)
     }
+    cart.totalPrice = cart.items.reduce(
+      (accumulator, currentValue) => accumulator + currentValue.total,
+      0
+    );
   }
   await cart.save()
   return res.status(201).json({status: "success", data: cart})
@@ -26,5 +35,14 @@ exports.createCart = catchAsync(async function (req, res){
 
 exports.getCart = catchAsync(async function (req, res){
   const cart = await Cart.findOne({user: req.user._id})
-  return res.status(200).json({status: "success", data: cart})
+  let totalQuantity
+  console.log("======", cart)
+  if(cart && cart.items.length !== 0){
+    totalQuantity = cart.items.reduce(
+      ( accumulator, currentValue ) => accumulator + currentValue.quantity
+      ,0);
+  } else {
+    totalQuantity = 0
+  }
+  return res.status(200).json({status: "success", data: cart, totalQuantity: totalQuantity})
 })

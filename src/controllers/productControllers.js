@@ -38,7 +38,7 @@ exports.getByCategory = catchAsync(async function (req, res, next) {
 
   //sort
   const sortBy = req.query.sort;
-  console.log(sortBy)
+  // console.log(sortBy)
   //pagination
   const page = req.query.page * 1;
   const limit = req.query.limit * 1;
