@@ -14,11 +14,11 @@ exports.login = async function(req, res, next){
 }
 
 exports.auth = async function(req, res, next){
-  // console.log("==================")
   if(!req.headers.authorization || !req.headers.authorization.startsWith("Bearer")){
     return res.status(401).json({status: "fail", message: "Unauthorized"})
   }
   const token = req.headers.authorization.replace("Bearer ", "");
+  // console.log(token,"=====")
   try{
     const decoded = jwt.verify(token, process.env.SECRET)
     const user = await User.findById({_id: decoded.id, tokens:token})
