@@ -58,13 +58,16 @@ exports.deleteItemCart = catchAsync(async function (req, res) {
   const itemId = req.params.id;
   const cart = await Cart.findOne({ user: req.user._id });
   const index = cart.items.findIndex((el) => el.id.toString() === itemId);
-  console.log(index)
   cart.items.splice(index, 1);
   cart.totalPrice = cart.items.reduce(
     (accumulator, currentValue) => accumulator + currentValue.total,
     0
   );
-  // console.log(cart.items)
   await cart.save();
   return res.status(204).json({ status: "success", data: null });
 });
+
+exports.deleteCart = catchAsync(async function(req, res){
+  await Cart.findOneAndDelete({user: req.user._id})
+  return res.status(204).json({ status: "success", data: null })
+})

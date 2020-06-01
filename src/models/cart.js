@@ -8,7 +8,8 @@ const cartSchema = mongoose.Schema({
   items: [{
     id: {
       type: mongoose.Schema.ObjectId,
-      ref: "Product"
+      ref: "Product",
+      required: [true, "product must have id"]
     },
     image: {
       type: String,
@@ -24,11 +25,12 @@ const cartSchema = mongoose.Schema({
     },
     quantity: {
       type: Number,
-      default: 1,
+      min: [1, "Quantity must be equal or greater than 1"],
       required:[true, "product must have quantity"]
     },
     total: {
-      type: Number
+      type: Number,
+      min: [0, "total must be equal or greater than 0"]
     }
   }],
   totalPrice: {
