@@ -37,8 +37,8 @@ const userSchema = mongoose.Schema(
       type: String,
     },
     tokens: [String],
-    listBuying: [],
-    listSelled: [{}]
+    listOrder: [],
+    listSold: [{}]
   },
   {
     timestamps: true,
@@ -75,6 +75,7 @@ userSchema.methods.toJSON = function () {
   let newObj = this.toObject();
   delete newObj.password;
   delete newObj.__v;
+  delete newObj.tokens;
   return newObj;
 };
 

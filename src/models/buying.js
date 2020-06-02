@@ -56,17 +56,19 @@ const buyingSchema = mongoose.Schema(
 );
 
 buyingSchema.post("save", async function(){
+  let buyObject = {...this.toObject()}
+  delete buyObject.paymentID
+  delete buyObject.paid
   const userBuyer = await mongoose.model('User').findById(this.user)
-  userBuyer.listBuying.push(this.products)
+  userBuyer.listOrder.push(buyObject)
   await userBuyer.save()
 })
 
 buyingSchema.post("save", async function(){
   for(let i=0; i< this.products.length; i++){
     const product = await mongoose.model('Product').findById(this.products[i].id)
-    console.log(product.owner,"id owner")
     const userSeller = await mongoose.model('User').findById(product.owner)
-    userSeller.listSelled.push(this.products[i])
+    userSeller.listSold.push(this.products[i])
     await userSeller.save()
   }
 })

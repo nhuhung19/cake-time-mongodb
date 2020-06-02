@@ -1,6 +1,5 @@
 const Cart = require("../models/cart");
 const catchAsync = require("../utils/catchAsync");
-const AppError = require("../utils/appError");
 
 exports.createCart = catchAsync(async function (req, res) {
   let cart;

@@ -33,7 +33,7 @@ exports.getByCategory = catchAsync(async function (req, res, next) {
   paginationKeys.map((el) => delete filters[el]);
   if (Object.keys(filters).length !== 0) {
     filters.title = { $regex: new RegExp(`.*${filters.title}.*`, "i") };
-    console.log(filters.title)
+    // console.log(filters.title)
   }
 
   //sort
