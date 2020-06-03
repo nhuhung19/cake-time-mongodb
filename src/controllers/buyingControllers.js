@@ -24,7 +24,8 @@ exports.createBuying = catchAsync(async function(req, res, next){
     if(listItems[i].quantity > product.stock)
     return next(new AppError(400, "Quantity is not available"));
     product.stock = product.stock - listItems[i].quantity
-    await product.save()
+    // console.log(product)
+    await product.save({validateBeforeSave: false})
   }
   const payment = await stripe.charges.create(
     {

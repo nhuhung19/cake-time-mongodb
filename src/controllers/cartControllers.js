@@ -1,7 +1,9 @@
 const Cart = require("../models/cart");
+const Product = require("../models/product")
 const catchAsync = require("../utils/catchAsync");
+const AppError = require("../utils/appError")
 
-exports.createCart = catchAsync(async function (req, res) {
+exports.createCart = catchAsync(async function (req, res, next) {
   let cart;
   let item = req.body;
   if (!(await Cart.exists({ user: req.user._id }))) {
@@ -19,6 +21,10 @@ exports.createCart = catchAsync(async function (req, res) {
       let product = cart.items.find((el) => el.id.toString() === item.id);
       product.quantity = item.quantity + product.quantity;
       product.total = item.price * product.quantity;
+      const originProduct = await Product.findById(item.id)
+      // console.log(product,"=====")
+      // console.log(originProduct)
+      if(product.quantity > originProduct.stock) return next(new AppError(400, "limit quantity"))
     } else {
       item.total = item.quantity * item.price;
       cart.items.push(item);

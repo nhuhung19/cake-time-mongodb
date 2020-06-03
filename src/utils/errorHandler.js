@@ -1,30 +1,13 @@
-
+const AppError = require("../utils/appError")
 
 
 module.exports = function (err, req, res, next) {
   err.status = err.status || "error" // either fail or error
   err.statusCode = err.statusCode || "500" // either 4xx or 500
+  // console.log(process.env.NODE_ENV)
 
-  console.log(process.env.NODE_ENV)
-  if (process.env.NODE_ENV === "development") {
-      return res
-          .status(err.statusCode)
-          .json({
-              status: err.status,
-              message: err.message,
-              error: err,
-              stack: err.stack
-          })
-  } else if (process.env.NODE_ENV === " production") {
-      return res
-          .status(err.statusCode)
-          .json({
-              status: err.status,
-              message: err.message
-          })
-  }
-  // don't directly modify the err object.
   let error = { ...err }
+  error.message = err.message;
 
   // invalid field format (mongodb)
   if (error.name === "CastError")
@@ -38,7 +21,26 @@ module.exports = function (err, req, res, next) {
   if (error.name === "ValidationError")
       error = handleValidationErrorDB(error)
 
-  errorProduction(error, res);
+  if (process.env.NODE_ENV === "development") {
+      return res
+          .status(error.statusCode)
+          .json({
+              status: error.status,
+              message: error.message,
+              error: error,
+              stack: error.stack
+          })
+  } else if (process.env.NODE_ENV === " production") {
+    return res
+    .status(error.statusCode)
+    .json({
+      status: error.status,
+      message: error.message
+    })
+  }
+  // don't directly modify the err object.
+
+  // errorProduction(error, res);
 }
 const handleCastErrorDB = err => {
   const message = `Invalid ${err.path}: ${err.value}`;
