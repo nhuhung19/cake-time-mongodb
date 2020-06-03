@@ -15,7 +15,7 @@ const passport = require('./src/auth/passport')
 const cors = require('cors')
 const AppError = require("./src/utils/appError")
 
-mongoose.connect(process.env.DB_LOCAL, {
+mongoose.connect(process.env.MONGODB_URI, {
   useCreateIndex: true,
     useNewUrlParser: true,
     useFindAndModify: false,
